@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Teacher Interface - Classroom 4/10</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
+
+    :root {
+      --primary: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+      --primary-solid: #3b82f6;
+      --primary-bright: #60a5fa;
+      --secondary: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+      --accent: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      
+      --bg-primary: #ffffff;
+      --bg-secondary: #f8fafc;
+      --bg-card: #ffffff;
+      --bg-glass: rgba(255, 255, 255, 0.9);
+      
+      --text-primary: #1e293b;
+      --text-secondary: #64748b;
+      --text-muted: #94a3b8;
+      
+      --border: #e2e8f0;
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      --shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.12);
+      
+      --radius: 12px;
+      --radius-lg: 16px;
+      --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, rgba(240, 249, 255, 0.9) 0%, rgba(224, 231, 255, 0.6) 100%);
+      padding: 4rem 0 3rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header-content {
+      position: relative;
+      z-index: 2;
+      padding-top: 1rem;
+    }
+
+    .header h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      background: var(--primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+    }
+
+    .header p {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+    }
+
+    .back-btn {
+      position: fixed;
+      left: 1.5rem;
+      top: 0.75rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: var(--bg-card);
+      border: 2px solid var(--border);
+      color: var(--text-primary);
+      text-decoration: none;
+      border-radius: var(--radius);
+      font-weight: 500;
+      transition: var(--transition);
+      z-index: 100;
+      font-size: 0.9rem;
+      box-shadow: var(--shadow);
+    }
+
+    .back-btn:hover {
+      background: var(--bg-secondary);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .lang-toggle {
+      position: fixed;
+      right: 1.5rem;
+      top: 0.75rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: var(--primary-solid);
+      color: white;
+      border: none;
+      border-radius: var(--radius);
+      font-weight: 500;
+      transition: var(--transition);
+      z-index: 100;
+      font-size: 0.9rem;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+    }
+
+    .lang-toggle:hover {
+      background: var(--primary-bright);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    /* Main Content */
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .form-container {
+      background: var(--bg-card);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      padding: 2rem;
+      margin: 2rem 0;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+      display: block;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+    }
+
+    .form-select {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 1rem;
+      font-family: inherit;
+      background: var(--bg-card);
+      color: var(--text-primary);
+      transition: var(--transition);
+    }
+
+    .form-select:focus {
+      outline: none;
+      border-color: var(--primary-solid);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    .form-textarea {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 1rem;
+      font-family: inherit;
+      background: var(--bg-card);
+      color: var(--text-primary);
+      transition: var(--transition);
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .form-textarea:focus {
+      outline: none;
+      border-color: var(--primary-solid);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    .form-date {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 1rem;
+      font-family: inherit;
+      background: var(--bg-card);
+      color: var(--text-primary);
+      transition: var(--transition);
+    }
+
+    .form-date:focus {
+      outline: none;
+      border-color: var(--primary-solid);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    .submit-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.875rem 2rem;
+      border-radius: var(--radius);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: var(--shadow);
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .success-message {
+      background: rgba(16, 185, 129, 0.1);
+      border: 2px solid var(--success);
+      color: var(--success);
+      padding: 1rem;
+      border-radius: var(--radius);
+      margin-bottom: 1rem;
+      display: none;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .error-message {
+      background: rgba(239, 68, 68, 0.1);
+      border: 2px solid var(--danger);
+      color: var(--danger);
+      padding: 1rem;
+      border-radius: var(--radius);
+      margin-bottom: 1rem;
+      display: none;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .subject-icon {
+      display: inline-block;
+      width: 20px;
+      text-align: center;
+      margin-right: 0.5rem;
+    }
+
+    /* Recent Assignments */
+    .recent-assignments {
+      margin-top: 3rem;
+    }
+
+    .recent-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin-bottom: 2rem;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .recent-title i {
+      color: var(--primary-solid);
+    }
+
+    .date-group {
+      margin-bottom: 2rem;
+    }
+
+    .date-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .date-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .date-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.375rem 0.875rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .date-badge.today {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .date-badge.yesterday {
+      background: rgba(245, 158, 11, 0.1);
+      color: var(--warning);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .date-badge.other {
+      background: rgba(59, 130, 246, 0.1);
+      color: var(--primary-solid);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+
+    .assignment-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden; /* Ensure delete button doesn't overflow */
+    }
+
+    .assignment-card:hover {
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-1px);
+    }
+
+    .assignment-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem; /* Increased spacing */
+    }
+
+    .assignment-subject {
+      font-weight: 600;
+      color: var(--primary-solid);
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .assignment-subject i {
+      background: linear-gradient(135deg, var(--primary-solid) 0%, var(--primary-bright) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .assignment-time {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      background: var(--bg-secondary);
+      padding: 0.25rem 0.625rem;
+      border-radius: 12px;
+      font-weight: 500;
+    }
+    
+    .assignment-date {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      background: var(--bg-secondary);
+      padding: 0.25rem 0.625rem;
+      border-radius: 12px;
+      font-weight: 500;
+    }
+
+    .assignment-content {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 1rem; /* Added margin */
+    }
+
+    .assignment-details-block {
+      position: relative; /* Needed for potential future edit button */
+      padding: 0.75rem;
+      background: var(--bg-secondary);
+      border-radius: var(--radius);
+      border-left: 3px solid var(--primary-solid);
+    }
+
+    .assignment-details-block p {
+      margin: 0; /* Remove default paragraph margin */
+    }
+
+    .assignment-actions {
+      text-align: right;
+    }
+
+    .no-assignments {
+      text-align: center;
+      padding: 3rem 2rem;
+      color: var(--text-muted);
+      background: var(--bg-secondary);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+    }
+
+    .no-assignments i {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      color: var(--text-muted);
+      opacity: 0.5;
+    }
+
+    .no-assignments h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+      color: var(--text-secondary);
+    }
+
+    .delete-btn {
+      background: none;
+      border: none;
+      color: var(--danger);
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 0.25rem;
+      transition: var(--transition);
+      opacity: 0.7;
+      margin-left: 0.5rem;
+    }
+
+    .delete-btn:hover {
+      opacity: 1;
+      color: var(--danger);
+      transform: scale(1.1);
+      outline: none;
+    }
+
+    .detail-textarea {
+      resize: none;
+      width: 100%;
+      min-height: 150px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    .recent-assignment {
+      background: #fff;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease;
+    }
+
+    .recent-assignment:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .container { padding: 0 1rem; }
+      .form-container { padding: 1.5rem; }
+      
+      .back-btn, .lang-toggle {
+        left: 1rem;
+        top: 0.75rem;
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+      }
+      
+      .lang-toggle {
+        right: 1rem;
+        left: auto;
+      }
+      
+      .header-content {
+        padding-top: 3rem;
+      }
+    }
+
+    /* Loading Animation */
+    .loading {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top: 2px solid white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+  <!-- Font Awesome CDN -->
+  <script src="https://kit.fontawesome.com/9f295c42cb.js" crossorigin="anonymous"></script>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+</head>
+<body>
+  <!-- Header Section -->
+  <header class="header">
+    <div class="container">
+      <div class="header-content">
+        <a href="https://leon-rm.github.io/4-10-classweb/index.html" class="back-btn">
+          <i class="fas fa-arrow-left"></i>
+          <span data-thai="กลับไปหน้าหลัก" data-english="Back to Home">กลับไปหน้าหลัก</span>
+        </a>
+        <button class="lang-toggle" onclick="toggleLanguage()">
+          <i class="fas fa-language"></i>
+          <span id="langText">EN</span>
+        </button>
+        <h1 data-thai="อินเทอร์เฟซครู" data-english="Teacher Interface">อินเทอร์เฟซครู</h1>
+        <p data-thai="เพิ่มงานและรายงานรายวันสำหรับนักเรียน" data-english="Add assignments and daily reports for students">เพิ่มงานและรายงานรายวันสำหรับนักเรียน</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container">
+    <div class="form-container">
+      <div class="success-message" id="successMessage">
+        <i class="fas fa-check-circle"></i>
+        <span data-thai="บันทึกข้อมูลเรียบร้อยแล้ว!" data-english="Assignment saved successfully!">บันทึกข้อมูลเรียบร้อยแล้ว!</span>
+      </div>
+      
+      <div class="error-message" id="errorMessage">
+        <i class="fas fa-exclamation-circle"></i>
+        <span id="errorText"></span>
+      </div>
+
+      <form id="assignmentForm">
+        <div class="form-group">
+          <label class="form-label" data-thai="เลือกวิชา" data-english="Select Subject">เลือกวิชา</label>
+          <select class="form-select" id="subjectSelect" required>
+            <option value="" data-thai="กรุณาเลือกวิชา" data-english="Please select a subject">กรุณาเลือกวิชา</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" data-thai="วันที่" data-english="Date">วันที่</label>
+          <input type="date" class="form-date" id="assignmentDate" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" data-thai="รายละเอียดงาน/รายงาน" data-english="Assignment/Report Details">รายละเอียดงาน/รายงาน</label>
+          <textarea 
+            class="form-textarea" 
+            id="assignmentDetails" 
+            data-thai="อธิบายรายละเอียดงานหรือรายงานที่มอบหมาย..." 
+            data-english="Describe the assignment or report details..."
+            placeholder="อธิบายรายละเอียดงานหรือรายงานที่มอบหมาย..." 
+            required></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn">
+          <i class="fas fa-save"></i>
+          <span data-thai="บันทึกข้อมูล" data-english="Save Assignment">บันทึกข้อมูล</span>
+          <div class="loading" id="loadingSpinner"></div>
+        </button>
+      </form>
+    </div>
+
+    <div class="recent-assignments">
+      <h2 class="recent-title" data-thai="งานล่าสุด" data-english="Recent Assignments">งานล่าสุด</h2>
+      <div id="recentAssignments"></div>
+    </div>
+  </main>
+
+  <script>
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyDPc5zKZzmre8sfAwx03x0jH3i1eVRAnec",
+      authDomain: "classweb-81bbb.firebaseapp.com",
+      projectId: "classweb-81bbb",
+      databaseURL: "https://classweb-81bbb-default-rtdb.asia-southeast1.firebasedatabase.app/",
+      storageBucket: "classweb-81bbb.firebasestorage.app",
+      messagingSenderId: "488267142455",
+      appId: "1:488267142455:web:f1c4f4fdbdfc097a3636b2"
+    };
+
+    // Subject data matching the original subjects.html
+    const subjects = [
+      { thai: 'คณิต', english: 'Math', icon: 'fas fa-calculator' },
+      { thai: 'ไทย', english: 'Thai', icon: 'fas fa-language' },
+      { thai: 'ไทยเสริม', english: 'Thai Advanced', icon: 'fas fa-book-reader' },
+      { thai: 'วิทย์', english: 'Science', icon: 'fas fa-atom' },
+      { thai: 'สังคม', english: 'Social', icon: 'fas fa-globe-asia' },
+      { thai: 'ประวัติ', english: 'History', icon: 'fas fa-landmark' },
+      { thai: 'ศิลปะ', english: 'Art', icon: 'fas fa-palette' },
+      { thai: 'Cooking Lab', english: 'Cooking Lab', icon: 'fas fa-flask' },
+      { thai: 'Cooking Studio', english: 'Cooking Studio', icon: 'fas fa-utensils' },
+      { thai: 'แนะแนว', english: 'Guidance', icon: 'fas fa-compass' },
+      { thai: 'เทคโน', english: 'Technology', icon: 'fas fa-cogs' },
+      { thai: 'ชุมนุม', english: 'Club', icon: 'fas fa-users' },
+      { thai: 'จริยะธรรม', english: 'Ethics', icon: 'fas fa-heart' },
+      { thai: 'อังกฤษ', english: 'English', icon: 'fas fa-globe-americas' },
+      { thai: 'อังกฤษเสริม', english: 'English Advanced', icon: 'fas fa-book-open' },
+      { thai: 'อังกฤษ Business English', english: 'Business English', icon: 'fas fa-briefcase' },
+      { thai: 'พละ', english: 'PE', icon: 'fas fa-running' },
+      { thai: 'สุขศึกษา', english: 'Health', icon: 'fas fa-heartbeat' },
+      { thai: 'วิชาธุรกิจ', english: 'Business Law', icon: 'fas fa-balance-scale' }
+    ];
+
+    // Language state
+    let currentLanguage = 'thai';
+    let db;
+    let isFirebaseReady = false;
+    
+    // Language strings for confirmation
+    let confirmDeleteTextThai = 'คุณแน่ใจหรือไม่ว่าต้องการลบรายการนี้?';
+    let confirmDeleteTextEnglish = 'Are you sure you want to delete this item?';
+
+    // Initialize Firebase
+    function initFirebase() {
+      try {
+        firebase.initializeApp(firebaseConfig);
+        db = firebase.database();
+        isFirebaseReady = true;
+        console.log('Firebase initialized successfully');
+      } catch (error) {
+        console.log('Firebase initialization failed:', error);
+      }
+    }
+
+    // Initialize when page loads
+    window.addEventListener('load', () => {
+      initFirebase();
+      populateSubjects();
+      setTodayDate();
+      loadRecentAssignments();
+    });
+
+    function populateSubjects() {
+      const select = document.getElementById('subjectSelect');
+      
+      // Clear existing options except the first one
+      while (select.children.length > 1) {
+        select.removeChild(select.lastChild);
+      }
+
+      subjects.forEach(subject => {
+        const option = document.createElement('option');
+        option.value = subject.thai; // Use Thai name as value
+        option.innerHTML = `<i class="${subject.icon}"></i> ${subject.thai}`; // Always show Thai name
+        option.setAttribute('data-thai', subject.thai);
+        option.setAttribute('data-english', subject.english);
+        select.appendChild(option);
+      });
+    }
+
+    function setTodayDate() {
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('assignmentDate').value = today;
+    }
+
+    function toggleLanguage() {
+      currentLanguage = currentLanguage === 'thai' ? 'english' : 'thai';
+      updateLanguage();
+      document.getElementById('langText').textContent = currentLanguage === 'thai' ? 'EN' : 'TH';
+    }
+
+    function updateLanguage() {
+      // Update elements with data-thai/data-english attributes
+      const elements = document.querySelectorAll('[data-thai][data-english]');
+      elements.forEach(element => {
+        // Skip subject options since we want to keep them in Thai
+        if (element.tagName === 'OPTION' && element.parentElement.id === 'subjectSelect') return;
+        
+        // Skip delete button text for now, handled separately
+        if (element.classList.contains('delete-btn-text')) return;
+
+        // Skip assignment card content which is dynamic
+        
+        const text = currentLanguage === 'thai' ? element.getAttribute('data-thai') : element.getAttribute('data-english');
+        if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+          element.placeholder = text;
+        } else {
+          element.textContent = text;
+        }
+      });
+
+      // Update delete button text
+      const deleteButtons = document.querySelectorAll('.delete-btn-text');
+      deleteButtons.forEach(btnTextSpan => {
+          btnTextSpan.textContent = currentLanguage === 'thai' ? 'ลบ' : 'Delete';
+      });
+
+      // Update confirmation dialog text variables
+      confirmDeleteTextThai = 'คุณแน่ใจหรือไม่ว่าต้องการลบรายการนี้?';
+      confirmDeleteTextEnglish = 'Are you sure you want to delete this item?';
+    }
+
+    // Form submission
+    document.getElementById('assignmentForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const submitBtn = e.target.querySelector('.submit-btn');
+      const loading = document.getElementById('loadingSpinner');
+      const successMsg = document.getElementById('successMessage');
+      const errorMsg = document.getElementById('errorMessage');
+      
+      // Show loading state
+      submitBtn.disabled = true;
+      loading.style.display = 'block';
+      successMsg.style.display = 'none';
+      errorMsg.style.display = 'none';
+
+      const formData = {
+        subject: document.getElementById('subjectSelect').value,
+        date: document.getElementById('assignmentDate').value,
+        details: document.getElementById('assignmentDetails').value,
+        timestamp: Date.now()
+      };
+
+      try {
+        if (isFirebaseReady) {
+          // Save to Firebase
+          await db.ref(`dailyReports/${formData.date}/${formData.subject}`).set(formData.details);
+          
+          // Also save to teacher submissions for tracking
+          await db.ref(`teacherSubmissions/${formData.timestamp}`).set(formData);
+        }
+        
+        // Show success message
+        successMsg.style.display = 'flex';
+        
+        // Reset form
+        document.getElementById('assignmentForm').reset();
+        setTodayDate();
+        
+        // Reload recent assignments
+        loadRecentAssignments();
+        
+      } catch (error) {
+        console.error('Error saving assignment:', error);
+        document.getElementById('errorText').textContent = currentLanguage === 'thai' ? 
+          'เกิดข้อผิดพลาดในการบันทึกข้อมูล' : 'Error saving assignment';
+        errorMsg.style.display = 'flex';
+      } finally {
+        // Hide loading state
+        submitBtn.disabled = false;
+        loading.style.display = 'none';
+      }
+    });
+
+    function loadRecentAssignments() {
+      if (!isFirebaseReady) return;
+      
+      db.ref('teacherSubmissions').orderByChild('timestamp').limitToLast(20).once('value') // Load more recent items
+        .then(snapshot => {
+          const assignments = [];
+          snapshot.forEach(child => {
+            assignments.push(child.val());
+          });
+          
+          // Sort by timestamp (most recent first)
+          assignments.sort((a, b) => b.timestamp - a.timestamp);
+          
+          displayRecentAssignments(assignments);
+        })
+        .then(() => updateLanguage()) // Update language after loading assignments
+        .catch(error => {
+          console.error('Error loading recent assignments:', error);
+        });
+    }
+
+    function displayRecentAssignments(assignments) {
+      const container = document.getElementById('recentAssignments');
+      
+      if (assignments.length === 0) {
+        container.innerHTML = `<p style="color: var(--text-muted); text-align: center; padding: 2rem;">${
+          document.querySelector('.recent-title').getAttribute('data-thai') === 'งานล่าสุด' ? 'ยังไม่มีงานที่บันทึก' : 'No assignments recorded yet'
+        }</p>`;
+        return;
+      }
+
+      // Store assignments data temporarily for delete function access
+      window.recentAssignmentsData = assignments;
+
+      container.innerHTML = assignments.map(assignment => {
+        const subject = subjects.find(s => s.thai === assignment.subject);
+        const date = new Date(assignment.date).toLocaleDateString(currentLanguage === 'thai' ? 'th-TH' : 'en-US');
+        
+        return `
+          <div class="assignment-card">
+            <div class="assignment-header">
+              <div class="assignment-subject">
+                <i class="${subject?.icon || 'fas fa-book'} subject-icon"></i>
+                ${subject?.thai || assignment.subject}
+              </div>
+              <div class="assignment-date">${date}</div>
+            </div>
+            <div class="assignment-details-block">
+              <p class="assignment-content">${assignment.details}</p>
+            </div>
+            <div class="assignment-actions">
+              <button class="delete-btn" data-timestamp="${assignment.timestamp}" data-date="${assignment.date}" data-subject="${assignment.subject}">
+                <i class="fas fa-trash-alt"></i>
+                <span class="delete-btn-text" data-thai="ลบ" data-english="Delete">ลบ</span>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Add event listeners for delete buttons
+      container.querySelectorAll('.delete-btn').forEach(button => {
+        button.addEventListener('click', handleDeleteClick);
+      });
+    }
+
+    function handleDeleteClick(event) {
+      const timestamp = event.currentTarget.getAttribute('data-timestamp');
+      const date = event.currentTarget.getAttribute('data-date');
+      const subject = event.currentTarget.getAttribute('data-subject');
+
+      const confirmationMessage = currentLanguage === 'thai' ? confirmDeleteTextThai : confirmDeleteTextEnglish;
+
+      if (confirm(confirmationMessage)) {
+        deleteAssignment(timestamp, date, subject);
+      }
+    }
+
+    async function deleteAssignment(timestamp, date, subject) {
+      if (!isFirebaseReady) return;
+
+      try {
+        // Delete from teacherSubmissions
+        await db.ref(`teacherSubmissions/${timestamp}`).remove();
+
+        // Delete from dailyReports (using date and subject)
+        // Note: This assumes date/subject combination is unique per day, which it should be based on the form
+        await db.ref(`dailyReports/${date}/${subject}`).remove();
+
+        console.log(`Assignment with timestamp ${timestamp} deleted successfully.`);
+
+        // Reload recent assignments
+        loadRecentAssignments();
+
+      } catch (error) {
+        console.error('Error deleting assignment:', error);
+        // Optionally show an error message to the user
+      }
+    }
+
+    // Add this to prevent right-click context menu
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+    });
+
+    // Disable keyboard shortcuts and F12
+    document.addEventListener('keydown', function(e) {
+        // Prevent F12
+        if(e.key === 'F12' || e.keyCode === 123) {
+            e.preventDefault();
+            return false;
+        }
+        
+        // Prevent Ctrl+Shift+I
+        if(e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.keyCode === 73)) {
+            e.preventDefault();
+            return false;
+        }
+        
+        // Prevent Ctrl+Shift+J
+        if(e.ctrlKey && e.shiftKey && (e.key === 'J' || e.key === 'j' || e.keyCode === 74)) {
+            e.preventDefault();
+            return false;
+        }
+        
+        // Prevent Ctrl+U (View Source)
+        if(e.ctrlKey && (e.key === 'U' || e.key === 'u' || e.keyCode === 85)) {
+            e.preventDefault();
+            return false;
+        }
+    });
+
+    // Disable text selection
+    document.onselectstart = function() { return false; }
+    
+    // Disable copy
+    document.oncopy = function() { return false; }
+    
+    // Disable save page
+    document.onkeydown = function(e) {
+        if (e.ctrlKey && (e.key === 's' || e.key === 'S' || e.keyCode === 83)) {
+            e.preventDefault();
+            return false;
+        }
+    }
+  </script>
+</body>
+</html>
