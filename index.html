@@ -570,6 +570,10 @@
           <label class="form-label" data-thai="เลือกวิชา" data-english="Select Subject">เลือกวิชา</label>
           <select class="form-select" id="subjectSelect" required>
             <option value="" data-thai="กรุณาเลือกวิชา" data-english="Please select a subject">กรุณาเลือกวิชา</option>
+            <option value="วิทย์">วิทย์</option>
+            <option value="ไทย">ไทย</option>
+            <option value="อังกฤษ">อังกฤษ</option>
+            <option value="สังคม">สังคม</option>
           </select>
         </div>
 
@@ -617,7 +621,7 @@
 
     // Subject data matching the original subjects.html
     const subjects = [
-   
+      { thai: 'คณิต', english: 'Math', icon: 'fas fa-calculator' },
       { thai: 'ไทย', english: 'Thai', icon: 'fas fa-language' },
       { thai: 'ไทยเสริม', english: 'Thai Advanced', icon: 'fas fa-book-reader' },
       { thai: 'วิทย์', english: 'Science', icon: 'fas fa-atom' },
@@ -911,10 +915,6 @@
             return false;
         }
     });
-
-    // Disable text selection
-    document.onselectstart = function() { return false; }
-    
     // Disable copy
     document.oncopy = function() { return false; }
     
